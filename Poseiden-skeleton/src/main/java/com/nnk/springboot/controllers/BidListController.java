@@ -1,6 +1,10 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.services.interfaces.IBid;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,17 +13,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.validation.Valid;
+import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 public class BidListController {
-    // TODO: Inject Bid service
+    private IBid bidService;
 
+    //TODO : FT : comment gere t'on les redirection et les messages d'erreurs ??
     @RequestMapping("/bidList/list")
-    public String home(Model model)
-    {
-        // TODO: call service find all bids to show to the view
+    public String home(Model model) {
+        try{
+            List<BidList> bidLists = bidService.getAllBids();
+            model.addAttribute("bidLists", bidLists);
+        }catch (Exception e){
+            model.addAttribute("errorMessage", e.getMessage());
+        }
         return "bidList/list";
     }
 
@@ -31,12 +41,29 @@ public class BidListController {
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         // TODO: check data valid and save to db, after saving return bid list
-        return "bidList/add";
+        if (result.hasErrors()) return "bidList/add";
+
+        try{
+            bidService.saveBid(bid);
+            return "bidList/list";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "bidList/add";
+        }
+
+
     }
 
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         // TODO: get Bid by Id and to model then show to the form
+        try {
+            BidList bidList = bidService.getBidById(id);
+            model.addAttribute("bidList", bidList);
+
+        } catch (IllegalArgumentException | EntityNotFoundException ex) {
+            model.addAttribute("errorMessage", ex.getMessage());
+        }
         return "bidList/update";
     }
 
