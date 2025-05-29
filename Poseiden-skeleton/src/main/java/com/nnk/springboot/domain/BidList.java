@@ -1,15 +1,73 @@
 package com.nnk.springboot.domain;
 
-import org.springframework.beans.factory.annotation.Required;
+import jakarta.persistence.*;
+import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "bidlist")
 public class BidList {
     // TODO: Map columns in data table BIDLIST with corresponding java fields
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Byte bidListId;
+
+    @Column(length = 30, nullable = false)
+    private String account;
+
+    @Column(length = 30, nullable = false)
+    private String type;
+
+    private double bidQuantity;
+    private double askQuantity;
+    private double bid;
+    private double ask;
+
+    @Column(length = 125)
+    private String benchmark;
+
+    private LocalDateTime bidListDate;
+
+    @Column(length = 125)
+    private String commentary;
+
+    @Column(length = 125)
+    private String security;
+
+    @Column(length = 10)
+    private String status;
+
+    @Column(length = 125)
+    private String trader;
+
+    @Column(length = 125)
+    private String book;
+
+    @Column(length = 125)
+    private String creationName;
+
+    private LocalDateTime creationDate;
+
+    @Column(length = 125)
+    private String revisionName;
+
+    private LocalDateTime revisionDate;
+
+    @Column(length = 125)
+    private String dealName;
+
+    @Column(length = 125)
+    private String dealType;
+
+    @Column(length = 125)
+    private String sourceListId;
+
+    @Column(length = 125)
+    private String side;
 }
