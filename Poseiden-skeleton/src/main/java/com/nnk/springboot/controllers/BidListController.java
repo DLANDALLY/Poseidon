@@ -50,8 +50,6 @@ public class BidListController {
             model.addAttribute("errorMessage", e.getMessage());
             return "bidList/add";
         }
-
-
     }
 
     @GetMapping("/bidList/update/{id}")
@@ -71,12 +69,25 @@ public class BidListController {
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                              BindingResult result, Model model) {
         // TODO: check required fields, if valid call service to update Bid and return list Bid
+        if (result.hasErrors()) return "bidList/update";
+
+        try {
+            bidService.updateBidList(bidList);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/bidList/list";
     }
 
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
         // TODO: Find Bid by Id and delete the bid, return to Bid list
+        try{
+            bidService.deleteBidListById(id);
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            throw new RuntimeException(e);
+        }
         return "redirect:/bidList/list";
     }
 }

@@ -11,4 +11,8 @@ public interface IBid {
     BidList saveBid(@Valid BidList bid);
 
     BidList getBidById(int id);
+
+    void updateBidList(@Valid BidList bidList);
+
+    void deleteBidListById(int id);
 }

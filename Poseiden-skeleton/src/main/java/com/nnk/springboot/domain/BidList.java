@@ -13,10 +13,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "bidlist")
 public class BidList {
-    // TODO: Map columns in data table BIDLIST with corresponding java fields
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Byte bidListId;
+    private int bidListId;
 
     @Column(length = 30, nullable = false)
     private String account;
@@ -70,4 +69,8 @@ public class BidList {
 
     @Column(length = 125)
     private String side;
+
+    public int getBidListId() {
+        return bidListId;
+    }
 }

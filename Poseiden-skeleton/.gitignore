@@ -30,5 +30,5 @@ build/
 /src/main/resources/application-local.properties
 
 ### ID BDD ###
-.env
+*.env
 /.apt_generated_tests/
