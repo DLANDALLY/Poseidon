@@ -8,19 +8,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class BidListServiceImplTest {
     @Mock
     private BidListRepository bidListRepository;
+    @Mock
+    private ModelMapper modelMapper;
     @InjectMocks
     private BidListServiceImpl bidListService;
 
@@ -72,5 +75,21 @@ class BidListServiceImplTest {
         assertEquals("Type1", result.getType());
         assertEquals(10d, result.getBidQuantity());
         verify(bidListRepository, times(1)).findById(1);
+    }
+
+    @Test
+    void shouldUpdateBidList(){
+        //Given
+        BidList bid1 = BidList.builder().bidListId(1).account("Account1").type("old").bidQuantity(10d).build();
+        BidList bid2 = BidList.builder().bidListId(1).account("Account1").type("update").bidQuantity(24d).build();
+
+        when(bidListRepository.findById(1)).thenReturn(Optional.of(bid1));
+
+        //When
+        bidListService.updateBidList(bid2);
+
+        //Then
+        verify(modelMapper).map(bid2, bid1);
+        verify(bidListRepository.save(bid1));
     }
 }

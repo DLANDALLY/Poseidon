@@ -5,12 +5,13 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "bidlist")
 public class BidList {
     @Id
@@ -69,8 +70,4 @@ public class BidList {
 
     @Column(length = 125)
     private String side;
-
-    public int getBidListId() {
-        return bidListId;
-    }
 }
