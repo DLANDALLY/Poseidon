@@ -4,10 +4,11 @@ import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.services.interfaces.IRating;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+@Service
 public class RatingServiceImpl extends CrudServiceImpl<Rating, Integer>  implements IRating {
 
     public RatingServiceImpl(JpaRepository<Rating, Integer> repository, ModelMapper modelMapper) {
