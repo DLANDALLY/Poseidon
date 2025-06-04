@@ -24,7 +24,7 @@ CREATE TABLE BidList (
   side VARCHAR(125),
 
   PRIMARY KEY (BidListId)
-)
+);
 
 CREATE TABLE Trade (
   TradeId tinyint(4) NOT NULL AUTO_INCREMENT,
@@ -50,7 +50,7 @@ CREATE TABLE Trade (
   side VARCHAR(125),
 
   PRIMARY KEY (TradeId)
-)
+);
 
 CREATE TABLE CurvePoint (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
@@ -61,7 +61,7 @@ CREATE TABLE CurvePoint (
   creationDate TIMESTAMP ,
 
   PRIMARY KEY (Id)
-)
+);
 
 CREATE TABLE Rating (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
@@ -71,7 +71,7 @@ CREATE TABLE Rating (
   orderNumber tinyint,
 
   PRIMARY KEY (Id)
-)
+);
 
 CREATE TABLE RuleName (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
@@ -83,7 +83,7 @@ CREATE TABLE RuleName (
   sqlPart VARCHAR(125),
 
   PRIMARY KEY (Id)
-)
+);
 
 CREATE TABLE Users (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
@@ -93,7 +93,54 @@ CREATE TABLE Users (
   role VARCHAR(125),
 
   PRIMARY KEY (Id)
-)
+);
 
-insert into Users(fullname, username, password, role) values("Administrator", "admin", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "ADMIN")
-insert into Users(fullname, username, password, role) values("User", "user", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "USER")
+insert into Users(fullname, username, password, role) values("Administrator", "admin", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "ADMIN");
+insert into Users(fullname, username, password, role) values("User", "user", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "USER");
+
+
+-- Trade
+INSERT INTO Trade (account, type, buyQuantity, sellQuantity, buyPrice, sellPrice, tradeDate, security, status, trader, benchmark, book, creationName, creationDate, revisionName, revisionDate, dealName, dealType, sourceListId, side)
+VALUES
+('ACC123', 'Spot', 1000, 0, 99.5, NULL, NOW(), 'AAPL', 'OPEN', 'TraderJoe', 'S&P500', 'Book1', 'System', NOW(), 'System', NOW(), 'Deal1', 'TypeA', 'SRC1', 'BUY'),
+('ACC456', 'Forward', NULL, 2000, NULL, 101.2, NOW(), 'GOOG', 'CLOSED', 'TraderJane', 'NASDAQ', 'Book2', 'Admin', NOW(), 'Admin', NOW(), 'Deal2', 'TypeB', 'SRC2', 'SELL'),
+('ACC789', 'Option', 1500, 500, 98.0, 100.0, NOW(), 'MSFT', 'PENDING', 'TraderMax', 'S&P100', 'Book3', 'Max', NOW(), 'Max', NOW(), 'Deal3', 'TypeC', 'SRC3', 'BUY'),
+('ACC321', 'Swap', 3000, 3000, 97.0, 99.0, NOW(), 'TSLA', 'CANCELLED', 'TraderAnne', 'DJI', 'Book4', 'Anne', NOW(), 'Anne', NOW(), 'Deal4', 'TypeD', 'SRC4', 'SELL'),
+('ACC654', 'Future', 500, 500, 96.0, 98.5, NOW(), 'AMZN', 'EXECUTED', 'TraderLeo', 'FTSE', 'Book5', 'Leo', NOW(), 'Leo', NOW(), 'Deal5', 'TypeE', 'SRC5', 'BUY');
+
+-- CurvePoint
+INSERT INTO CurvePoint (CurveId, asOfDate, term, value, creationDate)
+VALUES
+(1, NOW(), 1.0, 0.25, NOW()),
+(1, NOW(), 2.0, 0.45, NOW()),
+(2, NOW(), 3.0, 0.65, NOW()),
+(2, NOW(), 5.0, 0.85, NOW()),
+(3, NOW(), 10.0, 1.05, NOW());
+
+-- Rating
+INSERT INTO Rating (moodysRating, sandPRating, fitchRating, orderNumber)
+VALUES
+('Aaa', 'AAA', 'AAA', 1),
+('Aa2', 'AA', 'AA+', 2),
+('A1', 'A+', 'A+', 3),
+('Baa1', 'BBB+', 'BBB', 4),
+('Ba2', 'BB', 'BB-', 5);
+
+-- RuleName
+INSERT INTO RuleName (name, description, json, template, sqlStr, sqlPart)
+VALUES
+('Rule1', 'Check price > 100', '{"price":">100"}', 'template1', 'SELECT * FROM Trade WHERE price > 100', 'price > 100'),
+('Rule2', 'Check quantity < 500', '{"qty":"<500"}', 'template2', 'SELECT * FROM Trade WHERE qty < 500', 'qty < 500'),
+('Rule3', 'Check type Spot', '{"type":"Spot"}', 'template3', 'SELECT * FROM Trade WHERE type = "Spot"', 'type = "Spot"'),
+('Rule4', 'Check trader is Joe', '{"trader":"Joe"}', 'template4', 'SELECT * FROM Trade WHERE trader = "Joe"', 'trader = "Joe"'),
+('Rule5', 'Check status is OPEN', '{"status":"OPEN"}', 'template5', 'SELECT * FROM Trade WHERE status = "OPEN"', 'status = "OPEN"');
+
+
+-- User
+INSERT INTO Users (username, password, fullname, role)
+VALUES
+('jdoe', 'pass123', 'John Doe', 'USER'),
+('ajones', 'secure456', 'Alice Jones', 'ADMIN'),
+('bsmith', 'mypwd789', 'Bob Smith', 'USER'),
+('mking', 'king321', 'Mary King', 'MANAGER'),
+('tlee', 'lee456', 'Tom Lee', 'USER');

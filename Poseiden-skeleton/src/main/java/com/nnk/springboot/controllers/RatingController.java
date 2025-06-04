@@ -1,7 +1,11 @@
 package com.nnk.springboot.controllers;
 
+import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.Rating;
+import com.nnk.springboot.services.interfaces.IRating;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,15 +14,33 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 
 @Controller
+@RequiredArgsConstructor
 public class RatingController {
-    // TODO: Inject Rating service
+    private IRating ratingService;
+
+    // TODO: refac : Verifier les exceptions
+    // TODO: BUG : POST Faut-il pour les redirects ajouter id ?
+
+    //fait à verifier
+    // TODO: find all Rating, add to model
+    // TODO: check data valid and save to db, after saving return Rating list
+    // TODO: get Rating by Id and to model then show to the form
+    // TODO: check required fields, if valid call service to update Rating and return Rating list
+    // TODO: Find Rating by Id and delete the Rating, return to Rating list
 
     @RequestMapping("/rating/list")
-    public String home(Model model)
-    {
-        // TODO: find all Rating, add to model
+    public String home(Model model) {
+        try {
+            List<Rating> ratings = ratingService.getAllRating();
+            model.addAttribute("rating", ratings);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            throw new RuntimeException(e);
+        }
         return "rating/list";
     }
 
@@ -29,26 +51,49 @@ public class RatingController {
 
     @PostMapping("/rating/validate")
     public String validate(@Valid Rating rating, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return Rating list
-        return "rating/add";
+        if (result.hasErrors()) return "rating/add";
+
+        try{
+            ratingService.saveRating(rating);
+            return "rating/list";
+        } catch (Exception e) {
+            return "rating/add";
+        }
     }
 
     @GetMapping("/rating/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Rating by Id and to model then show to the form
+        try {
+            Rating rating = ratingService.getRatingById(id);
+            model.addAttribute("rating", rating);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            throw new RuntimeException(e);
+        }
         return "rating/update";
     }
 
     @PostMapping("/rating/update/{id}")
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Rating and return Rating list
+        if (result.hasErrors()) return "rating/update/"+id;
+
+        try{
+            ratingService.updateRating(id, rating);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
         return "redirect:/rating/list";
     }
 
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Rating by Id and delete the Rating, return to Rating list
+        try{
+            ratingService.deleteRatingById(id);
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            throw new RuntimeException(e);
+        }
         return "redirect:/rating/list";
     }
 }

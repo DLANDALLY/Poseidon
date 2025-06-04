@@ -2,9 +2,11 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
+import com.nnk.springboot.services.interfaces.IUser;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 
 @Controller
+@AllArgsConstructor
 public class UserController {
-    @Autowired
+    private IUser userService;
     private UserRepository userRepository;
 
     @RequestMapping("/user/list")
@@ -32,14 +37,17 @@ public class UserController {
 
     @PostMapping("/user/validate")
     public String validate(@Valid User user, BindingResult result, Model model) {
-        if (!result.hasErrors()) {
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
-            userRepository.save(user);
-            model.addAttribute("users", userRepository.findAll());
+        if (result.hasErrors()) return "user/add";
+
+        try {
+            userService.saveUser(user);
+            List<User> users = userService.getAllUsers();
+            model.addAttribute("users", users);
+
             return "redirect:/user/list";
+        } catch (EntityNotFoundException e) {
+            return "user/add";
         }
-        return "user/add";
     }
 
     @GetMapping("/user/update/{id}")
@@ -53,16 +61,17 @@ public class UserController {
     @PostMapping("/user/update/{id}")
     public String updateUser(@PathVariable("id") Integer id, @Valid User user,
                              BindingResult result, Model model) {
-        if (result.hasErrors()) {
+        if (result.hasErrors()) return "user/update";
+
+        try{
+            userService.updateUser(user);
+            List<User> users = userService.getAllUsers();
+            model.addAttribute("users", users);
+
+            return "redirect:/user/list";
+        } catch (EntityNotFoundException | IllegalArgumentException e) {
             return "user/update";
         }
-
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setId(id);
-        userRepository.save(user);
-        model.addAttribute("users", userRepository.findAll());
-        return "redirect:/user/list";
     }
 
     @GetMapping("/user/delete/{id}")

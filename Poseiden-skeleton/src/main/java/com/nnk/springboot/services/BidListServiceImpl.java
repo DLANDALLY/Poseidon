@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class BidListServiceImpl implements IBid {
-    private BidListRepository bidListRepository;
-    private ModelMapper modelMapper;
+    private final BidListRepository bidListRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public List<BidList> getAllBids() {

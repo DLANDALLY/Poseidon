@@ -22,6 +22,16 @@ public class BidListController {
     private IBid bidService;
 
     //TODO : FT : comment gere t'on les redirection et les messages d'erreurs ??
+    //TODO : refactor : model error message
+    //TODO : BUG : il manque le parametre ID dans updateBidList()
+
+    //fait a verifier
+    // TODO: check data valid and save to db, after saving return bid list
+    // TODO: get Bid by Id and to model then show to the form
+    // TODO: check required fields, if valid call service to update Bid and return list Bid
+    // TODO: Find Bid by Id and delete the bid, return to Bid list
+
+
     @RequestMapping("/bidList/list")
     public String home(Model model) {
         try{
@@ -40,7 +50,6 @@ public class BidListController {
 
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
-        // TODO: check data valid and save to db, after saving return bid list
         if (result.hasErrors()) return "bidList/add";
 
         try{
@@ -54,7 +63,6 @@ public class BidListController {
 
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Bid by Id and to model then show to the form
         try {
             BidList bidList = bidService.getBidById(id);
             model.addAttribute("bidList", bidList);
@@ -68,7 +76,6 @@ public class BidListController {
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Bid and return list Bid
         if (result.hasErrors()) return "bidList/update";
 
         try {
@@ -81,7 +88,6 @@ public class BidListController {
 
     @GetMapping("/bidList/delete/{id}")
     public String deleteBid(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Bid by Id and delete the bid, return to Bid list
         try{
             bidService.deleteBidListById(id);
         } catch (IllegalArgumentException | EntityNotFoundException e) {

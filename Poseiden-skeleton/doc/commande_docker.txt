@@ -1,0 +1,28 @@
+## connection MySQL:
+docker exec -it mysql-db mysql -u root -p
+
+## Commande de base
+
+| Commande               | Description                         |
+| ---------------------- | ----------------------------------- |
+| `SHOW DATABASES;`      | Liste toutes les bases              |
+| `USE nom_base;`        | Utilise une base                    |
+| `SHOW TABLES;`         | Liste les tables de la base         |
+| `DESCRIBE nom_table;`  | Affiche la structure d'une table    |
+| `SELECT * FROM table;` | Affiche tout le contenu d’une table |
+
+## Autre
+| Commande                        | Description        |
+| ------------------------------- | ------------------ |
+| `CREATE DATABASE nom;`          | Crée une base      |
+| `DROP DATABASE nom;`            | Supprime une base  |
+| `DROP TABLE nom;`               | Supprime une table |
+| `ALTER TABLE nom ADD col TYPE;` | Ajoute une colonne |
+
+
+INSERT INTO table (col1, col2) VALUES ('val1', 'val2');
+SELECT * FROM table;
+SELECT col1, col2 FROM table WHERE col3 = 'valeur';
+
+UPDATE table SET col1 = 'new_value' WHERE id = 1;
+DELETE FROM table WHERE id = 1;
