@@ -10,7 +10,7 @@ public interface IUser {
 
     List<User> getAllUsers();
 
-    void updateUser(@Valid User user);
+    void updateUser(Integer id, User user);
 
     User getUserById(int id);
 }

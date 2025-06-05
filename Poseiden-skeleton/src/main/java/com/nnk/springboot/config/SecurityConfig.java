@@ -42,26 +42,43 @@ public class SecurityConfig {
 
    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/bibList/**", "/curevePoint/**", "/rating/**",
-                                "/roleName/**","/trade/**","/user/**","/webjars/**", "/oauth2/**").permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/j_spring_security_check")
-                        .defaultSuccessUrl("/home", true)
-                        .usernameParameter("username")
-                        .passwordParameter("password")
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true)
-                        .clearAuthentication(true)
-                        .permitAll())
-                .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/error/403"));
+       http
+               .authorizeHttpRequests(auth -> auth
+                               .requestMatchers("/**","/actuator/**","/bibList/**", "/curvePoint/**", "/rating/**", "/roleName/**","/trade/**","/user/**","/webjars/**").permitAll()
+                       .anyRequest().authenticated()
+               )
+               .formLogin(login -> login
+                       .loginPage("/app/login")
+                       .loginProcessingUrl("/j_spring_security_check")
+                       .defaultSuccessUrl("/", true)
+                       .usernameParameter("username")
+                       .passwordParameter("password")
+                       .permitAll()
+               )
+               .logout(logout -> logout
+                       .logoutUrl("/app-logout")
+                       .logoutSuccessUrl("/login?logout")
+                       .invalidateHttpSession(true)
+                       .deleteCookies("JSESSIONID")
+               );
+//        http
+//                .authorizeHttpRequests(authz -> authz
+//                        .requestMatchers("/actuator/health","/bibList/**", "/curvePoint/**", "/rating/**",
+//                                "/roleName/**","/trade/**","/user/**","/webjars/**").permitAll()
+//                        .anyRequest().authenticated())
+//                .formLogin(form -> form
+//                        .loginPage("/login")
+//                        .loginProcessingUrl("/j_spring_security_check")
+//                        .defaultSuccessUrl("/home", true)
+//                        .usernameParameter("username")
+//                        .passwordParameter("password")
+//                        .permitAll())
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessUrl("/login")
+//                        .invalidateHttpSession(true)
+//                        .clearAuthentication(true)
+//                        .permitAll());
 
         return http.build();
     }

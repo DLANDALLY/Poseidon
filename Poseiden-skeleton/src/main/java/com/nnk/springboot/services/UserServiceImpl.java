@@ -6,50 +6,47 @@ import com.nnk.springboot.services.interfaces.IUser;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
-public class UserServiceImpl implements IUser {
-    private UserRepository userRepository;
+public class UserServiceImpl extends CrudServiceImpl<User, Integer> implements IUser {
+    @Autowired
     private BCryptPasswordEncoder encoder;
-    private ModelMapper modelMapper;
+
+    public UserServiceImpl(JpaRepository<User, Integer> repository, ModelMapper modelMapper) {
+        super(repository, modelMapper);
+    }
 
     @Override
     public void saveUser(User user) {
-        if (validateUserExists(user.getId()))
-            throw new EntityNotFoundException("User already existing");
+        if (user == null)
+            throw new IllegalArgumentException("User cannot be null");
 
         user.setPassword(encoder.encode(user.getPassword()));
-        userRepository.save(user);
+        saving(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return List.of();
+        return getAll();
     }
 
     @Override
-    public void updateUser(User user) {
-        if (user == null) throw new IllegalArgumentException("User can't be null");
+    public void updateUser(Integer id, User user) {
+        if (user == null)
+            throw new IllegalArgumentException("User can't be null");
 
-        User userBDD = getUserById(user.getId());
-        modelMapper.map(user, userBDD);
-        userBDD.setPassword(encoder.encode(userBDD.getPassword()));
+        user.setPassword(encoder.encode(user.getPassword()));
+        update(id, user);
     }
 
     @Override
     public User getUserById(int id){
-        if (id == 0) throw new IllegalArgumentException("ID can't be null");
-
-        return userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("No one user found with this ID ="+ id));
-    }
-
-    private boolean validateUserExists(int id){
-        return userRepository.existsById(id);
+        return getById(id);
     }
 }

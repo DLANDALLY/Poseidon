@@ -139,8 +139,8 @@ VALUES
 -- User
 INSERT INTO Users (username, password, fullname, role)
 VALUES
-('jdoe', 'pass123', 'John Doe', 'USER'),
-('ajones', 'secure456', 'Alice Jones', 'ADMIN'),
-('bsmith', 'mypwd789', 'Bob Smith', 'USER'),
-('mking', 'king321', 'Mary King', 'MANAGER'),
-('tlee', 'lee456', 'Tom Lee', 'USER');
+('jdoe', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'John Doe', 'USER'),
+('ajones', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Alice Jones', 'ADMIN'),
+('bsmith', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Bob Smith', 'USER'),
+('mking', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Mary King', 'MANAGER'),
+('tlee', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Tom Lee', 'USER');

@@ -63,7 +63,7 @@ public class UserController {
         if (result.hasErrors()) return "user/update";
 
         try{
-            userService.updateUser(user);
+            userService.updateUser(id, user);
             List<User> users = userService.getAllUsers();
             model.addAttribute("users", users);
 
