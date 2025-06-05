@@ -14,7 +14,5 @@ public interface ICurve {
 
     void updateCurvePoint(Integer id, @Valid CurvePoint curvePoint);
 
-    CurvePoint getCurvePointById(int id);
-
     void deleteCurvePointById(Integer id);
 }

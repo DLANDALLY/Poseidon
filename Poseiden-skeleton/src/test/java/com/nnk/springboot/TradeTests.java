@@ -19,9 +19,10 @@ public class TradeTests {
 
 	@Test
 	public void tradeTest() {
-		//TODO : creer builder
-		//Trade trade = new Trade("Trade Account", "Type");
-		Trade trade = new Trade();
+		Trade trade = Trade.builder()
+				.account("Trade Account")
+				.type("Type")
+				.build();
 
 		// Save
 		trade = tradeRepository.save(trade);

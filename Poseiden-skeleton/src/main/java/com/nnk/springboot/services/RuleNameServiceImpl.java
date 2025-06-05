@@ -15,7 +15,6 @@ public class RuleNameServiceImpl extends CrudServiceImpl<RuleName, Integer> impl
         super(repository, modelMapper);
     }
 
-
     @Override
     public List<RuleName> getAllRuleName() {
         return getAll();

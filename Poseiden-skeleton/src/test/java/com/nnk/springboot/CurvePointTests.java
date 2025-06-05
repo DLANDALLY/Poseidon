@@ -19,9 +19,11 @@ public class CurvePointTests {
 
 	@Test
 	public void curvePointTest() {
-		//TODO : Objet a creer
-		//CurvePoint curvePoint = new CurvePoint(10, 10d, 30d);
-		CurvePoint curvePoint = new CurvePoint();
+		CurvePoint curvePoint = CurvePoint.builder()
+				.curveId((byte) 10)
+				.value(10d)
+				.term(30d)
+				.build();
 
 		// Save
 		curvePoint = curvePointRepository.save(curvePoint);

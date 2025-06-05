@@ -9,13 +9,12 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
@@ -41,7 +40,7 @@ public class SecurityConfig {
         return provider;
     }
 
-   // @Bean
+   @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authz -> authz
@@ -50,20 +49,17 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .usernameParameter("email")
+                        .loginProcessingUrl("/j_spring_security_check")
+                        .defaultSuccessUrl("/home", true)
+                        .usernameParameter("username")
                         .passwordParameter("password")
                         .permitAll())
-                .oauth2Login(oauth -> oauth
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/profileGH", true))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true)
                         .clearAuthentication(true)
                         .permitAll())
-                .sessionManagement(session -> session
-                        .maximumSessions(1))
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/error/403"));
 

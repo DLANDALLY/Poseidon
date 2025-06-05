@@ -42,6 +42,4 @@ public class RatingServiceImpl extends CrudServiceImpl<Rating, Integer>  impleme
     public void deleteRatingById(Integer id) {
         deleteById(id);
     }
-
-
 }

@@ -20,7 +20,6 @@ public class BidTests {
 
 	@Test
 	public void bidListTest() {
-
 		BidList bid = BidList.builder()
 				.account("Account Test")
 				.type("Type Test")

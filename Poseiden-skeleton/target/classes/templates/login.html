@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title> Spring Boot </title>
+    <link rel="stylesheet" href="/css/styles.css"/>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js" defer></script>
+</head>
+<body>
+<h3> Login PAGE </h3>
+
+<!-- Authentification -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="row w-100 ">
+        <div class="col-md-4 text-center">
+            <!-- Boutons OAuth -->
+            <a th:href="@{/oauth2/authorization/github}" class="btn btn-lg mb-3 w-100">
+                <i class="bi bi-github"></i> Connexion avec GitHub
+            </a>
+        </div>
+        <div class="col-md-8">
+            <!-- Formulaire -->
+            <form th:action="@{/j_spring_security_check}" method="post" style="width: 400px">
+
+                <div class="row" style="margin-bottom: 5%">
+                    <button type="submit" class="btn btn-lg btn-warning" style="color: white" disabled>Pay My Buddy</button>
+                </div>
+                <div class="row">
+                    <div class="input mb-3">
+                        <input class="form-control"
+                               type="text"
+                               value="username"
+                               aria-label="readonly input example"
+                               name="email">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input mb-3">
+                        <input class="form-control"
+                               type="password"
+                               value="password"
+                               aria-label="readonly input example"
+                               name="password">
+                    </div>
+                </div>
+                <div class="row">
+                    <button type="submit" class="btn btn-lg btn-primary" style="color: white">se connecter</button>
+                </div>
+                <div>
+                    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
+                </div>
+                <div  class="row" th:if="${param.error}">
+                    <p style="color: red;">Invalid username or password!</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

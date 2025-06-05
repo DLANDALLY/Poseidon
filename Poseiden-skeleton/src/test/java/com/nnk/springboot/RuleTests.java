@@ -20,9 +20,14 @@ public class RuleTests {
 
 	@Test
 	public void ruleTest() {
-		//TODO : creer l'objet avec un builder
-		//RuleName rule = new RuleName("Rule Name", "Description", "Json", "Template", "SQL", "SQL Part");
-		RuleName rule = new RuleName();
+		RuleName rule = RuleName.builder()
+				.name("Rule Name")
+				.description("Description")
+				.json("Json")
+				.template("Template")
+				.sqlStr("SQL")
+				.sqlPart("SQL Part")
+				.build();
 
 		// Save
 		rule = ruleNameRepository.save(rule);

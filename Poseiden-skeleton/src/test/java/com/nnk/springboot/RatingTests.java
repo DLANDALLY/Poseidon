@@ -19,9 +19,12 @@ public class RatingTests {
 
 	@Test
 	public void ratingTest() {
-		//TODO : creer un objet buider
-		//Rating rating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
-		Rating rating = new Rating();
+		Rating rating = Rating.builder()
+				.moodysRating("Moodys Rating")
+				.sandPRating("Sand PRating")
+				.fitchRating("Fitch Rating")
+				.orderNumber((byte) 10)
+				.build();
 
 		// Save
 		rating = ratingRepository.save(rating);
