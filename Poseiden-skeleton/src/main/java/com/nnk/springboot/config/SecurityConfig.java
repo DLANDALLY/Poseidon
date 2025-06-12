@@ -44,42 +44,26 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        http
                .authorizeHttpRequests(auth -> auth
-                               .requestMatchers("/**","/actuator/**","/bibList/**", "/curvePoint/**", "/rating/**", "/roleName/**","/trade/**","/user/**","/webjars/**").permitAll()
-                       .anyRequest().authenticated()
-               )
+                       //.requestMatchers("/bibList/**", "/curvePoint/**", "/rating/**", "/roleName/**","/trade/**","/user/**","/webjars/**").permitAll()
+                       .requestMatchers("/app/login", "/user/**","/css/**","/webjars/**").permitAll()
+                       .anyRequest().authenticated())
                .formLogin(login -> login
                        .loginPage("/app/login")
                        .loginProcessingUrl("/j_spring_security_check")
-                       .defaultSuccessUrl("/", true)
+                       .defaultSuccessUrl("/bidList/list", true)
                        .usernameParameter("username")
                        .passwordParameter("password")
-                       .permitAll()
-               )
+                       .permitAll())
                .logout(logout -> logout
-                       .logoutUrl("/app-logout")
+                       .logoutUrl("/logout")
                        .logoutSuccessUrl("/login?logout")
                        .invalidateHttpSession(true)
                        .deleteCookies("JSESSIONID")
-               );
-//        http
-//                .authorizeHttpRequests(authz -> authz
-//                        .requestMatchers("/actuator/health","/bibList/**", "/curvePoint/**", "/rating/**",
-//                                "/roleName/**","/trade/**","/user/**","/webjars/**").permitAll()
-//                        .anyRequest().authenticated())
-//                .formLogin(form -> form
-//                        .loginPage("/login")
-//                        .loginProcessingUrl("/j_spring_security_check")
-//                        .defaultSuccessUrl("/home", true)
-//                        .usernameParameter("username")
-//                        .passwordParameter("password")
-//                        .permitAll())
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/login")
-//                        .invalidateHttpSession(true)
-//                        .clearAuthentication(true)
-//                        .permitAll());
-
+                       .permitAll())
+               .sessionManagement(session -> session
+                       .maximumSessions(1))
+               .exceptionHandling(exception -> exception
+                       .accessDeniedPage("/403"));
         return http.build();
     }
 }

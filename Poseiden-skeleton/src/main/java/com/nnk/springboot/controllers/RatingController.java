@@ -5,6 +5,7 @@ import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.services.interfaces.IRating;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +19,7 @@ import java.util.List;
 
 
 @Controller
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RatingController {
     private IRating ratingService;
 
@@ -36,7 +37,7 @@ public class RatingController {
     public String home(Model model) {
         try {
             List<Rating> ratings = ratingService.getAllRating();
-            model.addAttribute("rating", ratings);
+            model.addAttribute("ratings", ratings);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             throw new RuntimeException(e);
@@ -55,7 +56,7 @@ public class RatingController {
 
         try{
             ratingService.saveRating(rating);
-            return "rating/list";
+            return "redirect:/rating/list";
         } catch (Exception e) {
             return "rating/add";
         }

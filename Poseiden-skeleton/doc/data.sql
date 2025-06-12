@@ -144,3 +144,20 @@ VALUES
 ('bsmith', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Bob Smith', 'USER'),
 ('mking', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Mary King', 'MANAGER'),
 ('tlee', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Tom Lee', 'USER');
+
+INSERT INTO BidList (
+  account, type, bidQuantity, askQuantity, bid, ask, benchmark, bidListDate,
+  commentary, security, status, trader, book, creationName, creationDate,
+  revisionName, revisionDate, dealName, dealType, sourceListId, side
+) VALUES
+('ACC001', 'TypeA', 1000.0, 1200.0, 99.5, 100.0, 'Benchmark1', NOW(), 'Commentaire 1', 'SEC123', 'NEW', 'TraderX', 'Book1', 'Admin', NOW(), 'RevUser1', NOW(), 'Deal001', 'Swap', 'SRC001', 'Buy'),
+('ACC002', 'TypeB', 500.0, 550.0, 101.0, 102.0, 'Benchmark2', NOW(), 'Commentaire 2', 'SEC124', 'APPROVED', 'TraderY', 'Book2', 'Admin', NOW(), 'RevUser2', NOW(), 'Deal002', 'Option', 'SRC002', 'Sell'),
+('ACC003', 'TypeC', 2000.0, 1800.0, 98.0, 98.5, 'Benchmark3', NOW(), 'Commentaire 3', 'SEC125', 'REJECTED', 'TraderZ', 'Book3', 'User1', NOW(), 'User2', NOW(), 'Deal003', 'Future', 'SRC003', 'Buy'),
+('ACC004', 'TypeA', 1500.0, 1400.0, 97.5, 98.0, 'Benchmark1', NOW(), 'Commentaire 4', 'SEC126', 'NEW', 'TraderX', 'Book1', 'User2', NOW(), 'User3', NOW(), 'Deal004', 'Swap', 'SRC004', 'Sell'),
+('ACC005', 'TypeB', 300.0, 350.0, 100.5, 101.0, 'Benchmark2', NOW(), 'Commentaire 5', 'SEC127', 'APPROVED', 'TraderY', 'Book2', 'Admin', NOW(), 'Admin', NOW(), 'Deal005', 'Option', 'SRC005', 'Buy'),
+('ACC006', 'TypeC', 800.0, 750.0, 96.0, 96.5, 'Benchmark3', NOW(), 'Commentaire 6', 'SEC128', 'NEW', 'TraderZ', 'Book3', 'Admin', NOW(), 'User1', NOW(), 'Deal006', 'Future', 'SRC006', 'Sell'),
+('ACC007', 'TypeA', 1200.0, 1250.0, 99.0, 99.5, 'Benchmark1', NOW(), 'Commentaire 7', 'SEC129', 'APPROVED', 'TraderX', 'Book1', 'User2', NOW(), 'User3', NOW(), 'Deal007', 'Swap', 'SRC007', 'Buy'),
+('ACC008', 'TypeB', 400.0, 420.0, 101.5, 102.5, 'Benchmark2', NOW(), 'Commentaire 8', 'SEC130', 'REJECTED', 'TraderY', 'Book2', 'Admin', NOW(), 'Admin', NOW(), 'Deal008', 'Option', 'SRC008', 'Sell'),
+('ACC009', 'TypeC', 1800.0, 1850.0, 97.0, 97.5, 'Benchmark3', NOW(), 'Commentaire 9', 'SEC131', 'NEW', 'TraderZ', 'Book3', 'User1', NOW(), 'User2', NOW(), 'Deal009', 'Future', 'SRC009', 'Buy'),
+('ACC010', 'TypeA', 100.0, 110.0, 98.5, 99.0, 'Benchmark1', NOW(), 'Commentaire 10', 'SEC132', 'APPROVED', 'TraderX', 'Book1', 'User2', NOW(), 'User3', NOW(), 'Deal010', 'Swap', 'SRC010', 'Sell');
+

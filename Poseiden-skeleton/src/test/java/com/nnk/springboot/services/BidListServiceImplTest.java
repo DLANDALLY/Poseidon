@@ -52,7 +52,8 @@ class BidListServiceImplTest {
         Mockito.when(bidListRepository.save(bid1)).thenReturn(bid1);
 
         //When
-        BidList result = bidListService.saveBid(bid1);
+        bidListService.saveBid(bid1);
+        BidList result = new BidList();
 
         //Then
         assertEquals("Account1", result.getAccount());
@@ -86,7 +87,7 @@ class BidListServiceImplTest {
         when(bidListRepository.findById(1)).thenReturn(Optional.of(bid1));
 
         //When
-        bidListService.updateBidList(bid2);
+        bidListService.updateBidList(1, bid2);
 
         //Then
         verify(modelMapper).map(bid2, bid1);

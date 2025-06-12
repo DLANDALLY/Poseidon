@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class CrudServiceImpl<T, ID> implements ICrud<T,ID> {
+public abstract class CrudServiceImpl<T, ID> implements ICrud<T,ID> {
     private final JpaRepository<T, ID> repository;
     private final ModelMapper modelMapper;
 

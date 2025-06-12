@@ -15,11 +15,13 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl extends CrudServiceImpl<User, Integer> implements IUser {
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    public UserServiceImpl(JpaRepository<User, Integer> repository, ModelMapper modelMapper) {
+    public UserServiceImpl(JpaRepository<User, Integer> repository, ModelMapper modelMapper, UserRepository userRepository) {
         super(repository, modelMapper);
+        this.userRepository = userRepository;
+        this.encoder = new BCryptPasswordEncoder();
     }
 
     @Override
@@ -48,5 +50,14 @@ public class UserServiceImpl extends CrudServiceImpl<User, Integer> implements I
     @Override
     public User getUserById(int id){
         return getById(id);
+    }
+
+    @Override
+    public User getUserByName(String name) {
+        if (name == null)
+            throw new IllegalArgumentException("Name cannot be null");
+
+        return userRepository.findUserByUsername(name)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
 }

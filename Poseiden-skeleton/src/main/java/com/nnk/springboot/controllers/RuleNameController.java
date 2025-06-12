@@ -4,6 +4,7 @@ import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.services.interfaces.IRuleName;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,7 @@ import java.util.List;
 
 
 @Controller
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class RuleNameController {
     private IRuleName ruleNameService;
     // TODO: refac : Verifier les exceptions
@@ -35,7 +36,7 @@ public class RuleNameController {
     public String home(Model model) {
         try {
             List<RuleName> ruleName = ruleNameService.getAllRuleName();
-            model.addAttribute("ruleName", ruleName);
+            model.addAttribute("ruleNames", ruleName);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             throw new RuntimeException(e);
@@ -54,7 +55,7 @@ public class RuleNameController {
 
         try{
             ruleNameService.saveRuleName(ruleName);
-            return "ruleName/list";
+            return "redirect:/ruleName/list";
         } catch (Exception e) {
             return "ruleName/add";
         }

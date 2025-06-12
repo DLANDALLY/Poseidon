@@ -2,8 +2,11 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.services.interfaces.IBid;
+import com.nnk.springboot.utils.UtilSession;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +16,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 
 @Controller
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class BidListController {
     private IBid bidService;
 
     //TODO : FT : comment gere t'on les redirection et les messages d'erreurs ??
     //TODO : refactor : model error message
-    //TODO : BUG : il manque le parametre ID dans updateBidList()
+    //TODO : BUG : Add bid list ne fonctionne pas
+    //TODO : BUG : Read Liste de bid list ne fonctionne pas
+    //TODO : BUG : Gros probleme de session elle en se ferme pas lorsque je rerun le projet
 
     //fait a verifier
     // TODO: check data valid and save to db, after saving return bid list
@@ -33,7 +39,7 @@ public class BidListController {
 
 
     @RequestMapping("/bidList/list")
-    public String home(Model model) {
+    public String home(Principal principal, Model model) {
         try{
             List<BidList> bidLists = bidService.getAllBids();
             model.addAttribute("bidLists", bidLists);
@@ -54,7 +60,7 @@ public class BidListController {
 
         try{
             bidService.saveBid(bid);
-            return "bidList/list";
+            return "redirect:/bidList/list";
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "bidList/add";
@@ -79,7 +85,7 @@ public class BidListController {
         if (result.hasErrors()) return "bidList/update";
 
         try {
-            bidService.updateBidList(bidList);
+            bidService.updateBidList(id, bidList);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
         }

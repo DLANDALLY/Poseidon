@@ -37,7 +37,7 @@ class CurveServiceImplTest {
     }
 
     @Test
-    void getAllCurvePoint() {
+    void shouldGetAllCurvePointSuccessfully() {
         List<CurvePoint> curvePoints = List.of(new CurvePoint(), new CurvePoint());
         when(repository.findAll()).thenReturn(curvePoints);
 
@@ -48,7 +48,7 @@ class CurveServiceImplTest {
     }
 
     @Test
-    void saveCurvePoint() {
+    void shouldSaveCurvePointSuccessfully() {
         CurvePoint curvePoint = new CurvePoint();
 
         curveService.saveCurvePoint(curvePoint);
@@ -57,7 +57,7 @@ class CurveServiceImplTest {
     }
 
     @Test
-    void getCurvePointById() {
+    void shouldGetCurvePointByIdSuccessfully() {
         CurvePoint curvePoint = new CurvePoint();
         when(repository.findById(1)).thenReturn(Optional.of(curvePoint));
 
@@ -67,7 +67,7 @@ class CurveServiceImplTest {
     }
 
     @Test
-    void updateCurvePoint() {
+    void shouldThrowExceptionUpdateCurvePoint() {
         CurvePoint curvePoint = new CurvePoint();
 
         assertThrows(IllegalArgumentException.class,

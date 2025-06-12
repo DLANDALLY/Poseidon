@@ -6,7 +6,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 
 public interface ITrade {
-    List<Trade> getAllTrad();
+    List<Trade> getAllTrade();
 
     void saveTrade(@Valid Trade trade);
 

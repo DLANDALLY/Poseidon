@@ -4,6 +4,7 @@ import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.services.interfaces.ICurve;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,12 @@ import java.util.List;
 
 
 @Controller
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class CurveController {
     private ICurve curveService;
+
     // TODO: Verifier les exceptions
+    // TODO: BUG : Erreur 500 rien ne s'affiche
 
     //fait à verifier
     // TODO: find all Curve Point, add to model
@@ -29,15 +32,16 @@ public class CurveController {
     // TODO: check required fields, if valid call service to update Curve and return Curve list
     // TODO: Find Curve by Id and delete the Curve, return to Curve list
 
-    @RequestMapping("/curvePoint/list")
+    @GetMapping("/curvePoint/list")
     public String home(Model model) {
         try {
             List<CurvePoint> curvePoints = curveService.getAllCurvePoint();
             model.addAttribute("curvePoints", curvePoints);
-        } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            throw new RuntimeException(e);
+        } catch (IllegalArgumentException iae) {
+            model.addAttribute("errorMessage", iae.getMessage());
+            throw new RuntimeException(iae);
         }
+
         return "curvePoint/list";
     }
 
@@ -52,7 +56,7 @@ public class CurveController {
 
         try{
             curveService.saveCurvePoint(curvePoint);
-            return "curvePoint/list";
+            return "redirect:/curvePoint/list";
         } catch (Exception e) {
             return "curvePoint/add";
         }

@@ -8,11 +8,11 @@ import java.util.List;
 public interface IBid {
     List<BidList> getAllBids();
 
-    BidList saveBid(@Valid BidList bid);
+    void saveBid(@Valid BidList bid);
 
-    BidList getBidById(int id);
+    BidList getBidById(Integer id);
 
-    void updateBidList(@Valid BidList bidList);
+    void updateBidList(Integer id, BidList bidList);
 
-    void deleteBidListById(int id);
+    void deleteBidListById(Integer id);
 }

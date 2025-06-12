@@ -15,8 +15,7 @@ public class TradeServiceImpl extends CrudServiceImpl<Trade, Integer> implements
         super(repository, modelMapper);
     }
 
-    @Override
-    public List<Trade> getAllTrad() {
+    public List<Trade> getAllTrade() {
         return getAll();
     }
 

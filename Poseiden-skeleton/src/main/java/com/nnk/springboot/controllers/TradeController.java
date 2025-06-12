@@ -3,6 +3,8 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.services.interfaces.ITrade;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +17,7 @@ import java.util.List;
 
 
 @Controller
+@AllArgsConstructor
 public class TradeController {
     private ITrade tradeService;
     // TODO: Inject Trade service
@@ -32,8 +35,8 @@ public class TradeController {
     @RequestMapping("/trade/list")
     public String home(Model model) {
         try {
-            List<Trade> trades = tradeService.getAllTrad();
-            model.addAttribute("trade", trades);
+            List<Trade> trades = tradeService.getAllTrade();
+            model.addAttribute("trades", trades);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             throw new RuntimeException(e);
@@ -52,7 +55,7 @@ public class TradeController {
 
         try{
             tradeService.saveTrade(trade);
-            return "trade/list";
+            return "redirect:/trade/list";
         } catch (Exception e) {
             return "trade/add";
         }

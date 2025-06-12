@@ -13,4 +13,6 @@ public interface IUser {
     void updateUser(Integer id, User user);
 
     User getUserById(int id);
+
+    User getUserByName(String name);
 }

@@ -1,63 +1,45 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.BidList;
-import com.nnk.springboot.repositories.BidListRepository;
 import com.nnk.springboot.services.interfaces.IBid;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
-public class BidListServiceImpl implements IBid {
-    private final BidListRepository bidListRepository;
-    private final ModelMapper modelMapper;
+public class BidListServiceImpl extends CrudServiceImpl<BidList, Integer> implements IBid {
+
+    public BidListServiceImpl(JpaRepository<BidList, Integer> repository, ModelMapper modelMapper) {
+        super(repository, modelMapper);
+    }
 
     @Override
     public List<BidList> getAllBids() {
-        return bidListRepository.findAll();
+        return getAll();
     }
 
     @Override
-    public BidList saveBid(BidList bid) {
-        if (validateBidExists(bid.getBidListId()))
-            throw new IllegalArgumentException("Bid already exists");
+    public void saveBid(BidList bid) {
+        if (bid == null)
+            throw new IllegalArgumentException("Bid cannot be null");
 
-        return bidListRepository.save(bid);
+        saving(bid);
     }
 
     @Override
-    public BidList getBidById(int id){
-        if (id == 0)
-            throw new IllegalArgumentException("Id cannot be empty");
-
-        return bidListRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("BidList with id " + id + " not found"));
+    public BidList getBidById(Integer id){
+        return getById(id);
     }
 
     @Override
-    public void updateBidList(BidList bidList) {
-        BidList bidBDD = getBidById(bidList.getBidListId());
-
-        if (bidBDD == null)
-            throw new EntityNotFoundException("Update BidList error");
-
-        modelMapper.map(bidList, bidBDD);
-        bidListRepository.save(bidBDD);
+    public void updateBidList(Integer id, BidList bidList) {
+        update(id, bidList);
     }
 
     @Override
-    public void deleteBidListById(int id) {
-        if (id == 0)
-            throw new IllegalArgumentException("Id can't be null");
-        BidList bidList = getBidById(id);
-        bidListRepository.delete(bidList);
-    }
-
-    private boolean validateBidExists(int id){
-        return bidListRepository.existsById(id);
+    public void deleteBidListById(Integer id) {
+        deleteById(id);
     }
 }

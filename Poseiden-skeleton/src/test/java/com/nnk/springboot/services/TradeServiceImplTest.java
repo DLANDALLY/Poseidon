@@ -1,6 +1,5 @@
 package com.nnk.springboot.services;
 
-import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.domain.Trade;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,11 +34,11 @@ class TradeServiceImplTest {
     }
 
     @Test
-    void getAllTrad() {
+    void getAllTrade() {
         List<Trade> trades = List.of(new Trade(), new Trade());
         when(repository.findAll()).thenReturn(trades);
 
-        List<Trade> result = tradeService.getAllTrad();
+        List<Trade> result = tradeService.getAllTrade();
 
         assertEquals(2, result.size());
         verify(repository).findAll();
