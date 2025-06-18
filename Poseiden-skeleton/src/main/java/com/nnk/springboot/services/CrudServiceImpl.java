@@ -18,8 +18,8 @@ public abstract class CrudServiceImpl<T, ID> implements ICrud<T,ID> {
     }
 
     @Override
-    public T saving(T obj) {
-        return repository.save(obj);
+    public void saving(T obj) {
+        repository.save(obj);
     }
 
     @Override

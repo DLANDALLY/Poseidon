@@ -72,7 +72,7 @@ class RuleNameServiceImplTest {
     }
 
     @Test
-    void shouldThrwExceptionWhenDeleteRuleNameByIdIsNotFound() {
+    void shouldThrowExceptionWhenDeleteRuleNameByIdIsNotFound() {
         assertThrows(IllegalArgumentException.class,
                 () -> ruleNameService.deleteRuleNameById(300));
     }

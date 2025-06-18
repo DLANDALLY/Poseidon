@@ -1,12 +1,10 @@
 package com.nnk.springboot.controllers;
 
-import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.services.interfaces.IRating;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,21 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-
+@Slf4j
 @Controller
 @AllArgsConstructor
 public class RatingController {
     private IRating ratingService;
-
-    // TODO: refac : Verifier les exceptions
-    // TODO: BUG : POST Faut-il pour les redirects ajouter id ?
-
-    //fait à verifier
-    // TODO: find all Rating, add to model
-    // TODO: check data valid and save to db, after saving return Rating list
-    // TODO: get Rating by Id and to model then show to the form
-    // TODO: check required fields, if valid call service to update Rating and return Rating list
-    // TODO: Find Rating by Id and delete the Rating, return to Rating list
 
     @RequestMapping("/rating/list")
     public String home(Model model) {
@@ -39,8 +27,7 @@ public class RatingController {
             List<Rating> ratings = ratingService.getAllRating();
             model.addAttribute("ratings", ratings);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
         return "rating/list";
     }
@@ -58,6 +45,7 @@ public class RatingController {
             ratingService.saveRating(rating);
             return "redirect:/rating/list";
         } catch (Exception e) {
+            log.error(e.getMessage());
             return "rating/add";
         }
     }
@@ -68,8 +56,7 @@ public class RatingController {
             Rating rating = ratingService.getRatingById(id);
             model.addAttribute("rating", rating);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
         return "rating/update";
     }
@@ -82,7 +69,7 @@ public class RatingController {
         try{
             ratingService.updateRating(id, rating);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            log.error(e.getMessage());
         }
         return "redirect:/rating/list";
     }
@@ -92,8 +79,7 @@ public class RatingController {
         try{
             ratingService.deleteRatingById(id);
         } catch (IllegalArgumentException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
         return "redirect:/rating/list";
     }

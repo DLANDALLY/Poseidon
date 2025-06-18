@@ -32,3 +32,6 @@ build/
 ### ID BDD ###
 *.env
 /.apt_generated_tests/
+
+### Note ###
+*commande_docker.txt

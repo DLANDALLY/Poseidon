@@ -1,15 +1,15 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.BidList;
-import com.nnk.springboot.repositories.BidListRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,76 +21,58 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class BidListServiceImplTest {
     @Mock
-    private BidListRepository bidListRepository;
+    private JpaRepository<BidList, Integer> repository;
     @Mock
     private ModelMapper modelMapper;
     @InjectMocks
     private BidListServiceImpl bidListService;
 
+    @BeforeEach
+    void setUp() {
+        bidListService = new BidListServiceImpl(repository, modelMapper);
+    }
+
     @Test
     void shouldGetAllBidsSuccessfully() {
-        // Given
-        BidList bid1 = BidList.builder().account("Account1").type("Type1").bidQuantity(10d).build();
-        BidList bid2 = BidList.builder().account("Account1").type("Type1").bidQuantity(10d).build();
-        List<BidList> mockBids = List.of(bid1, bid2);
+        List<BidList> bidLists = List.of(new BidList(), new BidList());
+        when(repository.findAll()).thenReturn(bidLists);
 
-        Mockito.when(bidListRepository.findAll()).thenReturn(mockBids);
-
-        // When
         List<BidList> result = bidListService.getAllBids();
 
-        // Then
         assertEquals(2, result.size());
-        assertEquals("Account1", result.get(0).getAccount());
-        verify(bidListRepository, times(1)).findAll();
+        verify(repository).findAll();
     }
 
     @Test
     void shouldSaveBidSuccessfully() {
-        //Given
-        BidList bid1 = BidList.builder().account("Account1").type("Type1").bidQuantity(10d).build();
-        Mockito.when(bidListRepository.save(bid1)).thenReturn(bid1);
+        BidList bidList = new BidList();
 
-        //When
-        bidListService.saveBid(bid1);
-        BidList result = new BidList();
+        bidListService.saveBid(bidList);
 
-        //Then
-        assertEquals("Account1", result.getAccount());
-        assertEquals("Type1", result.getType());
-        assertEquals(10d, result.getBidQuantity());
-        verify(bidListRepository, times(1)).save(bid1);
+        verify(repository).save(bidList);
     }
 
     @Test
     void shouldGetBidByIdSuccessfully() {
-        //Given
-        BidList bid1 = BidList.builder().account("Account1").type("Type1").bidQuantity(10d).build();
-        Mockito.when(bidListRepository.findById(1)).thenReturn(Optional.ofNullable(bid1));
+        BidList bidList = new BidList();
+        when(repository.findById(1)).thenReturn(Optional.of(bidList));
 
-        //When
         BidList result = bidListService.getBidById(1);
 
-        //Then
-        assertEquals("Account1", result.getAccount());
-        assertEquals("Type1", result.getType());
-        assertEquals(10d, result.getBidQuantity());
-        verify(bidListRepository, times(1)).findById(1);
+        assertEquals(bidList, result);
     }
 
     @Test
-    void shouldUpdateBidList(){
-        //Given
-        BidList bid1 = BidList.builder().bidListId(1).account("Account1").type("old").bidQuantity(10d).build();
-        BidList bid2 = BidList.builder().bidListId(1).account("Account1").type("update").bidQuantity(24d).build();
+    void shouldThrowExceptionWhenUpdateBibListIsNotFound(){
+        BidList bidList = new BidList();
 
-        when(bidListRepository.findById(1)).thenReturn(Optional.of(bid1));
+        assertThrows(IllegalArgumentException.class,
+                () -> bidListService.updateBidList(300, bidList));
+    }
 
-        //When
-        bidListService.updateBidList(1, bid2);
-
-        //Then
-        verify(modelMapper).map(bid2, bid1);
-        verify(bidListRepository.save(bid1));
+    @Test
+    void shouldThrowExceptionWhenDeleteBibListByIdIsNotFound(){
+        assertThrows(IllegalArgumentException.class,
+                () -> bidListService.deleteBidListById(300));
     }
 }

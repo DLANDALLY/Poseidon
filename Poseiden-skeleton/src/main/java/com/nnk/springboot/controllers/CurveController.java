@@ -5,32 +5,21 @@ import com.nnk.springboot.services.interfaces.ICurve;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-
+@Slf4j
 @Controller
 @AllArgsConstructor
 public class CurveController {
     private ICurve curveService;
-
-    // TODO: Verifier les exceptions
-    // TODO: BUG : Erreur 500 rien ne s'affiche
-
-    //fait à verifier
-    // TODO: find all Curve Point, add to model
-    // TODO: check data valid and save to db, after saving return Curve list
-    // TODO: get CurvePoint by Id and to model then show to the form
-    // TODO: check required fields, if valid call service to update Curve and return Curve list
-    // TODO: Find Curve by Id and delete the Curve, return to Curve list
 
     @GetMapping("/curvePoint/list")
     public String home(Model model) {
@@ -38,10 +27,8 @@ public class CurveController {
             List<CurvePoint> curvePoints = curveService.getAllCurvePoint();
             model.addAttribute("curvePoints", curvePoints);
         } catch (IllegalArgumentException iae) {
-            model.addAttribute("errorMessage", iae.getMessage());
-            throw new RuntimeException(iae);
+            log.error(iae.getMessage());
         }
-
         return "curvePoint/list";
     }
 
@@ -58,6 +45,7 @@ public class CurveController {
             curveService.saveCurvePoint(curvePoint);
             return "redirect:/curvePoint/list";
         } catch (Exception e) {
+            log.error(e.getMessage());
             return "curvePoint/add";
         }
     }
@@ -68,8 +56,7 @@ public class CurveController {
             CurvePoint curvePoint = curveService.getCurvePointById(id);
             model.addAttribute("curvePoint", curvePoint);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
         return "curvePoint/update";
     }
@@ -82,7 +69,7 @@ public class CurveController {
         try{
             curveService.updateCurvePoint(id, curvePoint);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            log.error(e.getMessage());
         }
         return "redirect:/curvePoint/list";
     }
@@ -92,10 +79,8 @@ public class CurveController {
         try{
             curveService.deleteCurvePointById(id);
         } catch (IllegalArgumentException | EntityNotFoundException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
-
         return "redirect:/curvePoint/list";
     }
 }

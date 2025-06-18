@@ -2,12 +2,10 @@ package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.services.interfaces.IBid;
-import com.nnk.springboot.utils.UtilSession;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,24 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.security.Principal;
 import java.util.List;
 
-
+@Slf4j
 @Controller
 @AllArgsConstructor
 public class BidListController {
     private IBid bidService;
-
-    //TODO : FT : comment gere t'on les redirection et les messages d'erreurs ??
-    //TODO : refactor : model error message
-    //TODO : BUG : Add bid list ne fonctionne pas
-    //TODO : BUG : Read Liste de bid list ne fonctionne pas
-    //TODO : BUG : Gros probleme de session elle en se ferme pas lorsque je rerun le projet
-
-    //fait a verifier
-    // TODO: check data valid and save to db, after saving return bid list
-    // TODO: get Bid by Id and to model then show to the form
-    // TODO: check required fields, if valid call service to update Bid and return list Bid
-    // TODO: Find Bid by Id and delete the bid, return to Bid list
-
 
     @RequestMapping("/bidList/list")
     public String home(Principal principal, Model model) {
@@ -44,7 +29,7 @@ public class BidListController {
             List<BidList> bidLists = bidService.getAllBids();
             model.addAttribute("bidLists", bidLists);
         }catch (Exception e){
-            model.addAttribute("errorMessage", e.getMessage());
+            log.error(e.getMessage());
         }
         return "bidList/list";
     }
@@ -62,7 +47,7 @@ public class BidListController {
             bidService.saveBid(bid);
             return "redirect:/bidList/list";
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            log.error(e.getMessage());
             return "bidList/add";
         }
     }
@@ -73,8 +58,8 @@ public class BidListController {
             BidList bidList = bidService.getBidById(id);
             model.addAttribute("bidList", bidList);
 
-        } catch (IllegalArgumentException | EntityNotFoundException ex) {
-            model.addAttribute("errorMessage", ex.getMessage());
+        } catch (IllegalArgumentException | EntityNotFoundException e) {
+            log.error(e.getMessage());
         }
         return "bidList/update";
     }
@@ -87,7 +72,7 @@ public class BidListController {
         try {
             bidService.updateBidList(id, bidList);
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            log.error(e.getMessage());
         }
         return "redirect:/bidList/list";
     }
@@ -97,8 +82,7 @@ public class BidListController {
         try{
             bidService.deleteBidListById(id);
         } catch (IllegalArgumentException | EntityNotFoundException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
         return "redirect:/bidList/list";
     }

@@ -6,6 +6,7 @@ import com.nnk.springboot.services.interfaces.IUser;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-
+@Slf4j
 @Controller
 @AllArgsConstructor
 public class UserController {
@@ -45,6 +46,7 @@ public class UserController {
 
             return "redirect:/user/list";
         } catch (EntityNotFoundException e) {
+            log.error(e.getMessage());
             return "user/add";
         }
     }
@@ -69,6 +71,7 @@ public class UserController {
 
             return "redirect:/user/list";
         } catch (EntityNotFoundException | IllegalArgumentException e) {
+            log.error(e.getMessage());
             return "user/update";
         }
     }

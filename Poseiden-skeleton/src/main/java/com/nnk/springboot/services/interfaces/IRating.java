@@ -1,6 +1,5 @@
 package com.nnk.springboot.services.interfaces;
 
-
 import com.nnk.springboot.domain.Rating;
 import jakarta.validation.Valid;
 

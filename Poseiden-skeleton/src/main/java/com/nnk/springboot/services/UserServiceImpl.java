@@ -3,10 +3,7 @@ package com.nnk.springboot.services;
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
 import com.nnk.springboot.services.interfaces.IUser;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,11 +42,6 @@ public class UserServiceImpl extends CrudServiceImpl<User, Integer> implements I
 
         user.setPassword(encoder.encode(user.getPassword()));
         update(id, user);
-    }
-
-    @Override
-    public User getUserById(int id){
-        return getById(id);
     }
 
     @Override
