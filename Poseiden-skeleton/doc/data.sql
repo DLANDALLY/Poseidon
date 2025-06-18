@@ -1,5 +1,5 @@
 
-CREATE TABLE BidList (
+CREATE TABLE bidlist (
   BidListId tinyint(4) NOT NULL AUTO_INCREMENT,
   account VARCHAR(30) NOT NULL,
   type VARCHAR(30) NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE BidList (
   PRIMARY KEY (BidListId)
 );
 
-CREATE TABLE Trade (
+CREATE TABLE trade (
   TradeId tinyint(4) NOT NULL AUTO_INCREMENT,
   account VARCHAR(30) NOT NULL,
   type VARCHAR(30) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE Trade (
   PRIMARY KEY (TradeId)
 );
 
-CREATE TABLE CurvePoint (
+CREATE TABLE curvepoint (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
   CurveId tinyint,
   asOfDate TIMESTAMP,
@@ -63,7 +63,7 @@ CREATE TABLE CurvePoint (
   PRIMARY KEY (Id)
 );
 
-CREATE TABLE Rating (
+CREATE TABLE rating (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
   moodysRating VARCHAR(125),
   sandPRating VARCHAR(125),
@@ -73,7 +73,7 @@ CREATE TABLE Rating (
   PRIMARY KEY (Id)
 );
 
-CREATE TABLE RuleName (
+CREATE TABLE rulename (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
   name VARCHAR(125),
   description VARCHAR(125),
@@ -85,7 +85,7 @@ CREATE TABLE RuleName (
   PRIMARY KEY (Id)
 );
 
-CREATE TABLE Users (
+CREATE TABLE users (
   Id tinyint(4) NOT NULL AUTO_INCREMENT,
   username VARCHAR(125),
   password VARCHAR(125),
@@ -95,12 +95,13 @@ CREATE TABLE Users (
   PRIMARY KEY (Id)
 );
 
-insert into Users(fullname, username, password, role) values("Administrator", "admin", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "ADMIN");
-insert into Users(fullname, username, password, role) values("User", "user", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "USER");
+insert into users(fullname, username, password, role) values("Administrator", "admin", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "ADMIN");
+insert into users(fullname, username, password, role) values("User", "user", "$2a$10$pBV8ILO/s/nao4wVnGLrh.sa/rnr5pDpbeC4E.KNzQWoy8obFZdaa", "USER");
 
 
 -- Trade
-INSERT INTO Trade (account, type, buyQuantity, sellQuantity, buyPrice, sellPrice, tradeDate, security, status, trader, benchmark, book, creationName, creationDate, revisionName, revisionDate, dealName, dealType, sourceListId, side)
+INSERT INTO trade (account, type, buy_quantity, sell_quantity, buy_price, sell_price, trade_date, security, status,
+trader, benchmark, book, creation_name, creation_date, revision_name, revision_date, deal_name, deal_type, source_list_id, side)
 VALUES
 ('ACC123', 'Spot', 1000, 0, 99.5, NULL, NOW(), 'AAPL', 'OPEN', 'TraderJoe', 'S&P500', 'Book1', 'System', NOW(), 'System', NOW(), 'Deal1', 'TypeA', 'SRC1', 'BUY'),
 ('ACC456', 'Forward', NULL, 2000, NULL, 101.2, NOW(), 'GOOG', 'CLOSED', 'TraderJane', 'NASDAQ', 'Book2', 'Admin', NOW(), 'Admin', NOW(), 'Deal2', 'TypeB', 'SRC2', 'SELL'),
@@ -109,7 +110,7 @@ VALUES
 ('ACC654', 'Future', 500, 500, 96.0, 98.5, NOW(), 'AMZN', 'EXECUTED', 'TraderLeo', 'FTSE', 'Book5', 'Leo', NOW(), 'Leo', NOW(), 'Deal5', 'TypeE', 'SRC5', 'BUY');
 
 -- CurvePoint
-INSERT INTO CurvePoint (CurveId, asOfDate, term, value, creationDate)
+INSERT INTO curvepoint (curve_id, as_of_date, term, value, creation_date)
 VALUES
 (1, NOW(), 1.0, 0.25, NOW()),
 (1, NOW(), 2.0, 0.45, NOW()),
@@ -118,7 +119,7 @@ VALUES
 (3, NOW(), 10.0, 1.05, NOW());
 
 -- Rating
-INSERT INTO Rating (moodysRating, sandPRating, fitchRating, orderNumber)
+INSERT INTO rating (moodys_rating, sandprating, fitch_rating, order_number)
 VALUES
 ('Aaa', 'AAA', 'AAA', 1),
 ('Aa2', 'AA', 'AA+', 2),
@@ -127,7 +128,7 @@ VALUES
 ('Ba2', 'BB', 'BB-', 5);
 
 -- RuleName
-INSERT INTO RuleName (name, description, json, template, sqlStr, sqlPart)
+INSERT INTO rulename (name, description, json, template, sql_str, sql_part)
 VALUES
 ('Rule1', 'Check price > 100', '{"price":">100"}', 'template1', 'SELECT * FROM Trade WHERE price > 100', 'price > 100'),
 ('Rule2', 'Check quantity < 500', '{"qty":"<500"}', 'template2', 'SELECT * FROM Trade WHERE qty < 500', 'qty < 500'),
@@ -137,7 +138,7 @@ VALUES
 
 
 -- User
-INSERT INTO Users (username, password, fullname, role)
+INSERT INTO users (username, password, fullname, role)
 VALUES
 ('jdoe', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'John Doe', 'USER'),
 ('ajones', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Alice Jones', 'ADMIN'),
@@ -145,10 +146,10 @@ VALUES
 ('mking', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Mary King', 'MANAGER'),
 ('tlee', '$2a$10$WsYGYFpGJaDMnuOTL/qiW.siu6Ibn1Kvzy2cs/kXONu3G05u0UsYO', 'Tom Lee', 'USER');
 
-INSERT INTO BidList (
-  account, type, bidQuantity, askQuantity, bid, ask, benchmark, bidListDate,
-  commentary, security, status, trader, book, creationName, creationDate,
-  revisionName, revisionDate, dealName, dealType, sourceListId, side
+INSERT INTO bidlist (
+  account, type, bid_quantity, ask_quantity, bid, ask, benchmark, bid_list_date,
+  commentary, security, status, trader, book, creation_name, creation_date,
+  revision_name, revision_date, deal_name, deal_type, source_list_id, side
 ) VALUES
 ('ACC001', 'TypeA', 1000.0, 1200.0, 99.5, 100.0, 'Benchmark1', NOW(), 'Commentaire 1', 'SEC123', 'NEW', 'TraderX', 'Book1', 'Admin', NOW(), 'RevUser1', NOW(), 'Deal001', 'Swap', 'SRC001', 'Buy'),
 ('ACC002', 'TypeB', 500.0, 550.0, 101.0, 102.0, 'Benchmark2', NOW(), 'Commentaire 2', 'SEC124', 'APPROVED', 'TraderY', 'Book2', 'Admin', NOW(), 'RevUser2', NOW(), 'Deal002', 'Option', 'SRC002', 'Sell'),
