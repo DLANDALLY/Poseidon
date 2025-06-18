@@ -35,8 +35,8 @@ public class RuleNameController {
     @RequestMapping("/ruleName/list")
     public String home(Model model) {
         try {
-            List<RuleName> ruleName = ruleNameService.getAllRuleName();
-            model.addAttribute("ruleNames", ruleName);
+            List<RuleName> ruleNames = ruleNameService.getAllRuleName();
+            model.addAttribute("ruleNames", ruleNames);
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             throw new RuntimeException(e);

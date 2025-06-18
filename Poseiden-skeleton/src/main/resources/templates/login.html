@@ -7,16 +7,16 @@
     <script src="/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js" defer></script>
 </head>
 <body>
-<h3> Login PAGE </h3>
+<h3 class="offset-4 mt-5 mb-5"> Login PAGE </h3>
 
 <!-- Authentification -->
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 30vh;">
     <div class="row w-100 ">
 
-        <div class="col-md-8">
+        <div class="col-md-4">
             <!-- Formulaire -->
             <form th:action="@{/j_spring_security_check}" method="post" style="width: 400px">
-
+                <caption> Login with Username and Password</caption>
                 <div class="row">
                     <div class="input mb-3">
                         <input class="form-control"
