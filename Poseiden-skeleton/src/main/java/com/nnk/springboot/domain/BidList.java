@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,9 +19,11 @@ public class BidList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bidListId;
 
+    @NotNull(message = "Account is mandatory")
     @Column(length = 30, nullable = false)
     private String account;
 
+    @NotNull(message = "Type is mandatory")
     @Column(length = 30, nullable = false)
     private String type;
 
